@@ -66,7 +66,20 @@ add_relationship_query = """
      )
     VALUES (?, ?, ?, ?);
 """
- 
+fake = Faker()
+
+for _ in range(100):
+ person1_id = randint(1, 200)
+ person2_id = randint(1, 200)
+ while person2_id == person1_id:
+    person2_id = randint(1, 200)
+ rel_type = choice(('friend', 'spouse', 'partner', 'relative'))
+ start_date = fake.date_between(start_date='-50y', end_date='today')
+ new_relationship = (person1_id, person2_id, rel_type, start_date)
+ cur.execute(add_relationship_query, new_relationship)
+
+con.commit()
+con.close()
 
 if __name__ == '__main__':
    main()
