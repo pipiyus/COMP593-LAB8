@@ -8,7 +8,7 @@ Usage:
 """
 import os
 import sqlite3
-from .create_relationships import db_path, script_dir
+from create_relationships import db_path, script_dir
 import pandas as pd
 
 def main():
@@ -35,9 +35,11 @@ def get_married_couples():
         SELECT person1.name, person2.name, start_date, type FROM relationships
         JOIN people person1 ON person1_id = person1.id
         JOIN people person2 ON person2_id = person2.id;
+        WHERE type = 'spouse';
 """
      # Execute the query and get all results
     cur.execute(all_relationships_query)
+    all_relationships = cur.fetchall()
     
     con.close()
     
@@ -55,9 +57,8 @@ def save_married_couples_csv(married_couples, csv_path):
     """
     # TODO: Function body
     # Hint: We did this in Lab 7.
-    df = pd.DataFrame(married_couples, columns=['Person 1', 'Person 2', 'Start Date'])
-    
-    df.to_csv(csv_path, index=False)
+    marriage_dataframe = pd.DataFrame(married_couples)
+    marriage_dataframe.to_csv(csv_path, header=['Person 1', 'Person 2', 'Anniversary'], index=False)
 
 
 if __name__ == '__main__':
