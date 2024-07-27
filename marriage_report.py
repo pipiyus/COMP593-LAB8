@@ -57,8 +57,9 @@ def save_married_couples_csv(married_couples, csv_path):
     """
     # TODO: Function body
     # Hint: We did this in Lab 7.
-    marriage_dataframe = pd.DataFrame(married_couples)
-    marriage_dataframe.to_csv(csv_path, header=['Person 1', 'Person 2', 'Anniversary'], index=False)
+    df = pd.DataFrame(married_couples, columns=['Person 1', 'Person 2', 'Start Date'])
+    
+    df.to_csv(csv_path, index=False)
 
 
 if __name__ == '__main__':

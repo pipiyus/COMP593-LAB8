@@ -6,6 +6,7 @@ Description:
 Usage:
  python create_relationships.py
 """
+
 import os
 import sqlite3
 from random import randint, choice
@@ -78,9 +79,10 @@ for _ in range(100):
     start_date = fake.date_between(start_date='-50y', end_date='today')
     new_relationship = (person1_id, person2_id, rel_type, start_date)
     
-    chr.execute(add_relationship_query, new_relationship)
+    cur.execute(add_relationship_query, new_relationship)
 con.commit()
 con.close()
+
 
 if __name__ == '__main__':
    main()
