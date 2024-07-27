@@ -80,6 +80,7 @@ for _ in range(100):
     new_relationship = (person1_id, person2_id, rel_type, start_date)
     
     cur.execute(add_relationship_query, new_relationship)
+
 con.commit()
 con.close()
 
