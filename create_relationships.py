@@ -7,10 +7,12 @@ Usage:
  python create_relationships.py
 """
 
+import datetime 
 import os
 import sqlite3
 from random import randint, choice
 from faker import Faker
+
 
 
 # Determine the path of the database
@@ -23,11 +25,9 @@ def main():
 
 def create_relationships_table():
     """Creates the relationships table in the DB"""
-    # TODO: Function body
-    # Hint: See example code in lab instructions entitled "Add the Relationships Table"
 
-    con = sqlite3.connect('social_network.db')
-    cur = con.cursor()
+    conn = sqlite3.connect('db_path')
+    cur = conn.cursor()
 
 # SQL query that creates a table named 'relationships'.
     create_relationships_tbl_query = """
@@ -46,17 +46,15 @@ def create_relationships_table():
 # Execute the SQL query to create the 'relationships' table.
     cur.execute(create_relationships_tbl_query)
 
-    con.commit()
-    con.close()
+    conn.commit()
+    conn.close()
 
 def populate_relationships_table():
     """Adds 100 random relationships to the DB"""
-    # TODO: Function body
-    # Hint: See example code in lab instructions entitled "Populate the Relationships Table"
-    con = sqlite3.connect('social_network.db')
+    con = sqlite3.connect('db_path')
     cur = con.cursor()
 
-# SQL query that inserts a row of data in the relationships table.
+    #SQL query that inserts a row of data in the relationships table.
     add_relationship_query = """
         INSERT INTO relationships
         (
@@ -67,22 +65,22 @@ def populate_relationships_table():
         )
         VALUES (?, ?, ?, ?);
     """
-fake = Faker()
+    fake = Faker()
 
-for _ in range(100):
-    person1_id = randint(1, 200)
-    person2_id = randint(1, 200)
-    while person2_id == person1_id:
+    for _ in range(100):
+        person1_id = randint(1, 200)
         person2_id = randint(1, 200)
+        while person2_id == person1_id:
+           person2_id = randint(1, 200)
         
-    rel_type = choice(('friend', 'spouse', 'partner', 'relative'))
-    start_date = fake.date_between(start_date='-50y', end_date='today')
-    new_relationship = (person1_id, person2_id, rel_type, start_date)
+        rel_type = choice(('friend', 'spouse', 'partner', 'relative'))
+        start_date = fake.date_between(start_date='-50y', end_date='today')
+        new_relationship = (person1_id, person2_id, rel_type, start_date)
     
-    cur.execute(add_relationship_query, new_relationship)
-
-con.commit()
-con.close()
+        cur.execute(add_relationship_query, new_relationship)
+    
+    con.commit()
+    con.close()
 
 
 if __name__ == '__main__':
